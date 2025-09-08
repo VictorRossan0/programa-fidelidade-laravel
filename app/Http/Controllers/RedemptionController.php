@@ -1,0 +1,34 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Http\Requests\RedeemRewardRequest;
+use App\Models\Client;
+use App\Models\Redemption;
+use App\Models\Reward;
+use App\Jobs\SendRedemptionEmail;
+
+class RedemptionController extends Controller
+{
+    public function store(RedeemRewardRequest $request)
+    {
+        $client = Client::findOrFail($request->client_id);
+        $reward = Reward::findOrFail($request->reward_id);
+        $point = $client->points->first();
+
+        if (!$point || $point->amount < $reward->points_required) {
+            return response()->json(['error' => 'Saldo insuficiente'], 400);
+        }
+
+        $point->decrement('amount', $reward->points_required);
+
+        $redemption = Redemption::create([
+            'client_id' => $client->id,
+            'reward_id' => $reward->id
+        ]);
+
+        dispatch(new SendRedemptionEmail($client, $reward));
+
+        return response()->json($redemption, 201);
+    }
+}
