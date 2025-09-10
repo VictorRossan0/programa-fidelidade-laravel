@@ -16,5 +16,5 @@ Route::middleware('token:001')->post('/clients', [ClientController::class, 'stor
 Route::middleware('token:002')->get('/clients/{id}', [ClientController::class, 'show']); // Consulta de cliente
 Route::middleware('token:003')->get('/clients', [ClientController::class, 'index']); // Listagem de clientes
 Route::middleware('token:004')->get('/clients/{id}/balance', [ClientController::class, 'balance']); // Consulta de saldo
-Route::middleware('token:006')->post('/points/earn', [PointController::class, 'earn']); // Pontuar cliente
 Route::middleware('token:005')->post('/redemptions', [RedemptionController::class, 'store']); // Resgate de prêmio
+Route::middleware('token:006')->post('/points/earn', [PointController::class, 'earn']); // Pontuar cliente
