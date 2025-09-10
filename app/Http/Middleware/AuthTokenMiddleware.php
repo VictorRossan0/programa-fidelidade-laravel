@@ -24,12 +24,12 @@ class AuthTokenMiddleware
 
         // Verifica se o token é válido
         if (!$token || !isset($this->tokens[$token])) {
-            return response()->json(['error' => 'Unauthorized'], 401);
+            return response()->json(['error' => 'Não autorizado'], 401);
         }
 
         // Se a rota exigir permissão, verifica se o token possui
         if ($permission && !in_array($permission, $this->tokens[$token])) {
-            return response()->json(['error' => 'Forbidden'], 403);
+            return response()->json(['error' => 'Proibido'], 403);
         }
 
         return $next($request);

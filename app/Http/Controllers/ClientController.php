@@ -38,7 +38,7 @@ class ClientController extends Controller
     {
         $client = Client::with('points', 'redemptions.reward')->findOrFail($id);
         return response()->json([
-            'saldo' => $client->points->amount,
+            'saldo' => $client->points->sum('amount'),
             'resgates' => $client->redemptions
         ]);
     }
