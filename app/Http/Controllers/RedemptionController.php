@@ -14,8 +14,8 @@ class RedemptionController extends Controller
     // Realiza o resgate de um prêmio, desconta pontos e dispara e-mail.
     public function store(RedeemRewardRequest $request)
     {
-        $client = Client::findOrFail($request->client_id);
-        $reward = Reward::findOrFail($request->reward_id);
+    $client = Client::findOrFail($request->input('client_id'));
+    $reward = Reward::findOrFail($request->input('reward_id'));
         $point = $client->points->first();
 
         if (!$point || $point->amount < $reward->points_required) {

@@ -14,14 +14,14 @@ class PointController extends Controller
     // Adiciona pontos ao cliente conforme valor gasto e dispara e-mail.
     public function earn(AddPointsRequest $request)
     {
-        $client = Client::findOrFail($request->client_id);
-        $points = floor($request->amount_spent / 5);
+    $client = Client::findOrFail($request->input('client_id'));
+    $points = floor($request->input('amount_spent') / 5);
 
         $client->points->increment('amount', $points);
 
         Transaction::create([
             'client_id'    => $client->id,
-            'amount_spent' => $request->amount_spent,
+            'amount_spent' => $request->input('amount_spent'),
             'points_earned' => $points
         ]);
 
