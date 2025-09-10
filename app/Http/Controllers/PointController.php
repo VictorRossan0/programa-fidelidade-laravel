@@ -8,8 +8,10 @@ use App\Models\Transaction;
 use App\Jobs\SendPointsEmail;
 use Illuminate\Routing\Controller;
 
+// Controller responsável por pontuar clientes e registrar transações.
 class PointController extends Controller
 {
+    // Adiciona pontos ao cliente conforme valor gasto e dispara e-mail.
     public function earn(AddPointsRequest $request)
     {
         $client = Client::findOrFail($request->client_id);

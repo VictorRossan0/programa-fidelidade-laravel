@@ -8,8 +8,10 @@ use App\Models\Redemption;
 use App\Models\Reward;
 use App\Jobs\SendRedemptionEmail;
 
+// Controller responsável pelo resgate de prêmios pelos clientes.
 class RedemptionController extends Controller
 {
+    // Realiza o resgate de um prêmio, desconta pontos e dispara e-mail.
     public function store(RedeemRewardRequest $request)
     {
         $client = Client::findOrFail($request->client_id);

@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+// Request para validação dos dados ao pontuar cliente.
 class AddPointsRequest extends FormRequest
 {
     public function authorize()

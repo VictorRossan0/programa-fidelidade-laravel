@@ -7,6 +7,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
+// Classe responsável pelo e-mail de confirmação de pontos ganhos.
 class PointsEarnedMail extends Mailable
 {
     use Queueable, SerializesModels;

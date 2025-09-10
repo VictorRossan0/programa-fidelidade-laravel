@@ -7,6 +7,7 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use App\Models\Client;
 
+// Classe responsável pelo e-mail de lembrete diário para o cliente.
 class DailyReminderMail extends Mailable
 {
     use Queueable, SerializesModels;

@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+// Request para validação dos dados ao cadastrar cliente.
 class StoreClientRequest extends FormRequest
 {
     public function authorize()

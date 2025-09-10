@@ -4,21 +4,26 @@ namespace App\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
-use App\Jobs\SendDailyReminderEmail; // Import the job class
+use App\Jobs\SendDailyReminderEmail;
+use App\Models\Client;
 
 class Kernel extends ConsoleKernel
 {
     /**
-     * Define the application's command schedule.
+     * Agendamento de tarefas do sistema.
+     * Aqui é feito o envio diário de lembretes para todos os clientes elegíveis.
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->job(new SendDailyReminderEmail)->daily();
+        // Envia lembrete diário para todos os clientes
+        $schedule->call(function () {
+            $clients = Client::all();
+            foreach ($clients as $client) {
+                dispatch(new SendDailyReminderEmail($client));
+            }
+        })->daily();
     }
 
-    /**
-     * Register the commands for the application.
-     */
     protected function commands()
     {
         $this->load(__DIR__.'/Commands');
