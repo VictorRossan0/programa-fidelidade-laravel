@@ -1,4 +1,9 @@
 <?php
+/**
+ * UserFactory
+ *
+ * Fábrica padrão de usuários para testes (Laravel default com ajustes).
+ */
 
 namespace Database\Factories;
 

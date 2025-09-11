@@ -1,4 +1,9 @@
 <?php
+/**
+ * PointsEarnedMail
+ *
+ * Mailable de confirmação de pontos ganhos com saldo atualizado.
+ */
 
 namespace App\Mail;
 

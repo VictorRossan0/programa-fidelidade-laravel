@@ -1,4 +1,9 @@
 <?php
+/**
+ * DatabaseSeeder
+ *
+ * Orquestra a execução dos seeders da aplicação para popular dados de exemplo.
+ */
 
 namespace Database\Seeders;
 

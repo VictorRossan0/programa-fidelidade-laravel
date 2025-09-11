@@ -1,4 +1,9 @@
 <?php
+/**
+ * Migration: create_rewards_table
+ *
+ * Tabela de prêmios e sua pontuação exigida.
+ */
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;

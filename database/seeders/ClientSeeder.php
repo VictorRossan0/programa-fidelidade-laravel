@@ -1,4 +1,9 @@
 <?php
+/**
+ * ClientSeeder
+ *
+ * Insere alguns clientes de exemplo para desenvolvimento e testes.
+ */
 
 namespace Database\Seeders;
 

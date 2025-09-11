@@ -1,4 +1,9 @@
 <?php
+/**
+ * SendRedemptionEmail Job
+ *
+ * Envia e-mail de confirmação de resgate para o cliente.
+ */
 
 namespace App\Jobs;
 
@@ -10,6 +15,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Mail;
+use App\Mail\RewardRedeemedMail;
 
 /**
  * Job responsável por enviar o e-mail de confirmação de resgate de prêmio.
@@ -31,8 +37,9 @@ class SendRedemptionEmail implements ShouldQueue
     public function handle()
     {
         // Envia o e-mail de confirmação de resgate de prêmio
-        $balance = $this->client->points->amount ?? 0;
+    $point = $this->client->points()->first();
+    $balance = $point?->amount ?? 0;
         Mail::to($this->client->email)
-            ->send(new \App\Mail\RewardRedeemedMail($this->client, $this->reward, $balance));
+            ->send(new RewardRedeemedMail($this->client, $this->reward, $balance));
     }
 }

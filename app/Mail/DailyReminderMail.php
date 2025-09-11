@@ -1,4 +1,9 @@
 <?php
+/**
+ * DailyReminderMail
+ *
+ * Mailable do lembrete diário para clientes elegíveis.
+ */
 
 namespace App\Mail;
 

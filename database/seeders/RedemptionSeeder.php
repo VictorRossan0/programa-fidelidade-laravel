@@ -1,4 +1,9 @@
 <?php
+/**
+ * RedemptionSeeder
+ *
+ * Registra resgates de prêmios de exemplo.
+ */
 
 namespace Database\Seeders;
 

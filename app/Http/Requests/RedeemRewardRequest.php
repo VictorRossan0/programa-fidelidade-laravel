@@ -1,4 +1,9 @@
 <?php
+/**
+ * RedeemRewardRequest
+ *
+ * Validação do resgate (005): client_id e reward_id válidos.
+ */
 
 namespace App\Http\Requests;
 

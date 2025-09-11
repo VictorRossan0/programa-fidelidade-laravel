@@ -1,39 +1,50 @@
 <?php
+/**
+ * ClientController
+ *
+ * Responsável por cadastro (001), consulta (002), listagem (003) e saldo (004)
+ * de clientes do programa de fidelidade.
+ */
 
-// Controller responsável pelo cadastro, consulta e listagem de clientes.
 namespace App\Http\Controllers;
 
 use App\Models\Client;
-use App\Models\Point;
 use App\Http\Requests\StoreClientRequest;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 class ClientController extends Controller
 {
-    // Cadastra um novo cliente e inicializa seus pontos.
+    /**
+     * Cadastra um novo cliente (001) e inicializa seus pontos via evento do Model.
+     */
     public function store(StoreClientRequest $request)
     {
-        $client = Client::create($request->validated());
-        Point::create(['client_id' => $client->id, 'amount' => 0]);
+    $client = Client::create($request->validated());
+    // A criação do registro de pontos é realizada no evento booted() do Model Client
 
         return response()->json($client, 201);
     }
 
 
-    // Retorna os dados de um cliente específico, incluindo pontos e resgates.
+    /**
+     * Retorna os dados de um cliente (002), incluindo pontos e resgates.
+     */
     public function show($id)
     {
         return Client::with('points', 'redemptions.reward')->findOrFail($id);
     }
 
-    // Lista todos os clientes cadastrados.
+    /**
+     * Lista todos os clientes (003).
+     */
     public function index()
     {
         return Client::all();
     }
 
-    // Consulta o saldo de pontos e os resgates do cliente.
+    /**
+     * Consulta o saldo de pontos e resgates do cliente (004).
+     */
     public function balance($id)
     {
         $client = Client::with('points', 'redemptions.reward')->findOrFail($id);

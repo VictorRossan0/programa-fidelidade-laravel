@@ -1,4 +1,9 @@
 <?php
+/**
+ * Migration: create_points_table
+ *
+ * Tabela de saldo de pontos por cliente.
+ */
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;

@@ -1,4 +1,9 @@
 <?php
+/**
+ * RewardRedeemedMail
+ *
+ * Mailable de confirmação do resgate, com detalhes do prêmio e saldo.
+ */
 
 namespace App\Mail;
 

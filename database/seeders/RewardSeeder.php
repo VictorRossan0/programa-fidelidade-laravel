@@ -1,4 +1,9 @@
 <?php
+/**
+ * RewardSeeder
+ *
+ * Popula a tabela de prêmios com itens e seus pontos necessários.
+ */
 
 namespace Database\Seeders;
 

@@ -1,4 +1,9 @@
 <?php
+/**
+ * StoreClientRequest
+ *
+ * Validação do cadastro de cliente (001): nome e e-mail únicos e válidos.
+ */
 
 namespace App\Http\Requests;
 

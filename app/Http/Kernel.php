@@ -10,8 +10,7 @@ class Kernel extends HttpKernel
     public function __construct(\Illuminate\Foundation\Application $app, \Illuminate\Routing\Router $router)
     {
         parent::__construct($app, $router);
-
-        dd($this->routeMiddleware);
+        // Debug removido
     }
 
     protected $routeMiddleware = [

@@ -1,4 +1,10 @@
 <?php
+/**
+ * PointController
+ *
+ * Gerencia a pontuação (006): recebe valor gasto, calcula pontos (1 a cada R$5),
+ * incrementa o saldo do cliente, registra transação e dispara e-mail.
+ */
 
 namespace App\Http\Controllers;
 
@@ -8,16 +14,18 @@ use App\Models\Transaction;
 use App\Jobs\SendPointsEmail;
 use Illuminate\Routing\Controller;
 
-// Controller responsável por pontuar clientes e registrar transações.
 class PointController extends Controller
 {
-    // Adiciona pontos ao cliente conforme valor gasto e dispara e-mail.
+    /**
+     * Adiciona pontos ao cliente (006) e dispara e-mail de confirmação.
+     */
     public function earn(AddPointsRequest $request)
     {
     $client = Client::findOrFail($request->input('client_id'));
-    $points = floor($request->input('amount_spent') / 5);
+    $points = (int) floor($request->input('amount_spent') / 5);
 
-        $client->points->increment('amount', $points);
+    $point = $client->points()->firstOrCreate(['client_id' => $client->id], ['amount' => 0]);
+    $point->increment('amount', $points);
 
         Transaction::create([
             'client_id'    => $client->id,
@@ -25,7 +33,8 @@ class PointController extends Controller
             'points_earned' => $points
         ]);
 
-        dispatch(new SendPointsEmail($client, $points));
+    $point->refresh();
+    dispatch(new SendPointsEmail($client, $points));
 
         return response()->json(['message' => 'Pontos adicionados com sucesso']);
     }

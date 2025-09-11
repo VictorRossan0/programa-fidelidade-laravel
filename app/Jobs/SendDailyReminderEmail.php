@@ -1,4 +1,9 @@
 <?php
+/**
+ * SendDailyReminderEmail Job
+ *
+ * Envia e-mail diário para clientes com saldo suficiente para o prêmio máximo.
+ */
 
 namespace App\Jobs;
 
@@ -7,10 +12,9 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-
-
 use App\Models\Client;
 use Illuminate\Support\Facades\Mail;
+use App\Mail\DailyReminderMail;
 
 /**
  * Job responsável por enviar o e-mail de lembrete diário para o cliente.
@@ -31,6 +35,6 @@ class SendDailyReminderEmail implements ShouldQueue
     {
         // Envia o e-mail de lembrete diário
         Mail::to($this->client->email)
-            ->send(new \App\Mail\DailyReminderMail($this->client));
+            ->send(new DailyReminderMail($this->client));
     }
 }

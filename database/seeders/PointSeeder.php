@@ -1,4 +1,9 @@
 <?php
+/**
+ * PointSeeder
+ *
+ * Define saldos iniciais de pontos para clientes de exemplo.
+ */
 
 namespace Database\Seeders;
 

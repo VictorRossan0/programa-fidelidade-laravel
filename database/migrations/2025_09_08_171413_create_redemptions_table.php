@@ -1,4 +1,9 @@
 <?php
+/**
+ * Migration: create_redemptions_table
+ *
+ * Tabela de resgates de prêmios por cliente.
+ */
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;

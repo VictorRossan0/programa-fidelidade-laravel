@@ -1,4 +1,9 @@
 <?php
+/**
+ * Migration: create_clients_table
+ *
+ * Tabela de clientes do programa de fidelidade.
+ */
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;

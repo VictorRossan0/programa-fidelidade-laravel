@@ -1,82 +1,59 @@
-# 📑 Documentação da API - Programa de Fidelidade
+# 📑 Documentação da API — Programa de Fidelidade
+
+API REST para cadastro de clientes, pontuação por compras, resgate de prêmios e e-mails automáticos (transacionais e lembrete diário).
+
+Base URL: <http://127.0.0.1:8000/api>
 
 ---
-
-## ⚙️ Banco de Dados
-
-- Utiliza MySQL (configuração no arquivo `.env`).
-- Estrutura criada via migrations do Laravel.
-
----
-
-## 📧 E-mails Automáticos
-
-- O sistema dispara e-mails automáticos via Mailtrap:
-  - Ao ganhar pontos (`PointsEarnedMail`).
-  - Ao resgatar prêmio (`RewardRedeemedMail`).
-  - Lembrete diário para clientes com saldo suficiente para o prêmio máximo (`DailyReminderMail`).
-- Os templates dos e-mails podem ser personalizados em `resources/views/emails/`.
-- O agendamento diário é feito via cronjob no `Console/Kernel.php`.
-
----
-
-## 🛠️ Jobs e Agendamento
-
-- Jobs implementados para envio de e-mails.
-- O agendamento diário percorre todos os clientes e dispara o lembrete para quem tem saldo suficiente.
-
----
-
-## ✅ Checklist de Requisitos Atendidos
-
-- [x] Framework Laravel
-- [x] Banco de dados MySQL
-- [x] Eloquent ORM
-- [x] Jobs
-- [x] Validations
-- [x] Artisan Console (Cronjobs)
-- [x] Mail
-- [x] Middlewares
-- [x] Endpoints obrigatórios (001 a 006)
-- [x] Decremento de pontos ao resgatar prêmio
-- [x] Validação para não pontuar valores abaixo do mínimo
-- [x] Envio de e-mail ao ganhar pontos e ao resgatar prêmio
-- [x] Envio de e-mail diário para clientes com saldo suficiente
-- [x] Autenticação via Bearer Token com permissões
 
 ## 🔐 Autenticação
 
+Autenticação via Bearer Token com permissões por endpoint (middleware `token:<perm>`).
+
+Header:
+
+```http
+Authorization: Bearer <TOKEN>
+```
+
+Tokens de exemplo:
+
+- `4b5f8f32c96a9aa152e0c6615d4e632f` → 001,002,003,004,005,006
+- `117ae721e424e7f819893edb2c0c5fd6` → 002,003,004
+- `3b7d6e2cb06ba79a9c9744f8e256a39e` → 005,006
+
 ---
 
-## 📝 Observações Finais
+## ⚙️ Regras de Pontos
 
-- Para visualizar os e-mails enviados, acesse sua caixa Mailtrap.
-- Os templates dos e-mails podem ser personalizados conforme desejado.
-- Para agendar o envio diário, certifique-se que o cron do Laravel está rodando (`php artisan schedule:run`).
-- O projeto está pronto para ser testado via Postman, Insomnia ou outra ferramenta de API.
+- 1 ponto a cada R$5,00 gastos (arredondado para baixo): `points = floor(amount_spent / 5)`
+- Valor mínimo para gerar pontos: `amount_spent >= 5`
 
-Authorization: Bearer {token}
+---
 
-``` markdown
+## 🧩 Modelo de Dados (resumo)
 
-### Tokens disponíveis
+- Tabelas
+  - `clients` — clientes do programa
+  - `points` — saldo único de pontos por cliente (`client_id`, `amount`)
+  - `rewards` — prêmios com `points_required`
+  - `redemptions` — resgates realizados (`client_id`, `reward_id`)
+  - `transactions` — compras com `amount_spent` e `points_earned`
 
-- `4b5f8f32c96a9aa152e0c6615d4e632f` → 001,002,003,004,005,006  
-- `117ae721e424e7f819893edb2c0c5fd6` → 002,003,004  
-- `3b7d6e2cb06ba79a9c9744f8e256a39e` → 005,006  
-
-```
+- Relacionamentos
+  - Client hasOne Point
+  - Client hasMany Redemptions; Redemption belongsTo Reward
+  - Client hasMany Transactions
 
 ---
 
 ## 📌 Endpoints
 
-### 001 - Cadastrar Cliente
+### 001 — Cadastrar Cliente
 
-`POST /clients`  
-**Permissão:** 001  
+POST /clients — perm: 001
 
-**Body (JSON):**
+Body (JSON):
 
 ```json
 {
@@ -85,25 +62,29 @@ Authorization: Bearer {token}
 }
 ```
 
-**Resposta (201):**
+Resposta (201 Created):
 
 ```json
 {
   "id": 1,
   "name": "João Silva",
   "email": "joao.silva@example.com",
-  "created_at": "2025-09-07T16:00:00"
+  "created_at": "2025-09-07T16:00:00.000000Z"
 }
 ```
 
+Erros comuns:
+
+- 422 Unprocessable Entity (validação): campos obrigatórios/duplicados
+- 401/403 (autenticação/permissão)
+
 ---
 
-### 002 - Buscar Cliente
+### 002 — Buscar Cliente
 
-`GET /clients/{id}`  
-**Permissão:** 002  
+GET /clients/{id} — perm: 002
 
-**Resposta (200):**
+Resposta (200):
 
 ```json
 {
@@ -115,21 +96,32 @@ Authorization: Bearer {token}
 }
 ```
 
+Observação: `points` representa o saldo do cliente.
+
+Erros comuns:
+
+- 404 Not Found: cliente inexistente
+- 401/403 (autenticação/permissão)
+
 ---
 
-### 003 - Listar Clientes
+### 003 — Listar Clientes
 
-`GET /clients`  
-**Permissão:** 003  
+GET /clients — perm: 003
+
+Retorna a lista de clientes.
+
+Erros comuns:
+
+- 401/403 (autenticação/permissão)
 
 ---
 
-### 004 - Consultar Saldo
+### 004 — Consultar Saldo
 
-`GET /clients/{id}/balance`  
-**Permissão:** 004  
+GET /clients/{id}/balance — perm: 004
 
-**Resposta (200):**
+Resposta (200):
 
 ```json
 {
@@ -138,14 +130,18 @@ Authorization: Bearer {token}
 }
 ```
 
+Erros comuns:
+
+- 404 Not Found: cliente inexistente
+- 401/403 (autenticação/permissão)
+
 ---
 
-### 005 - Resgatar Prêmio
+### 005 — Resgatar Prêmio
 
-`POST /redemptions`  
-**Permissão:** 005  
+POST /redemptions — perm: 005
 
-**Body (JSON):**
+Body (JSON):
 
 ```json
 {
@@ -154,25 +150,39 @@ Authorization: Bearer {token}
 }
 ```
 
-**Resposta (201):**
+Resposta (201 Created):
+
+Headers:
+
+```http
+Location: /api/redemptions/1
+```
+
+Body:
 
 ```json
 {
   "id": 1,
   "client_id": 1,
   "reward_id": 2,
-  "created_at": "2025-09-07T16:05:00"
+  "remaining_balance": 5,
+  "created_at": "2025-09-07T16:05:00.000000Z"
 }
 ```
 
+Erros comuns:
+
+- 400 Bad Request: {"error":"Saldo insuficiente"}
+- 404 Not Found: `client_id` ou `reward_id` inexistente
+- 401/403 (autenticação/permissão)
+
 ---
 
-### 006 - Pontuar Cliente
+### 006 — Pontuar Cliente
 
-`POST /points/earn`  
-**Permissão:** 006  
+POST /points/earn — perm: 006
 
-**Body (JSON):**
+Body (JSON):
 
 ```json
 {
@@ -181,7 +191,7 @@ Authorization: Bearer {token}
 }
 ```
 
-**Resposta (200):**
+Resposta (200):
 
 ```json
 {
@@ -189,42 +199,73 @@ Authorization: Bearer {token}
 }
 ```
 
+Validações:
+
+- `client_id` deve existir; `amount_spent` numérico e mínimo 5.
+
+Erros comuns:
+
+- 422 Unprocessable Entity: `amount_spent < 5` ou inválido
+- 404 Not Found: `client_id` inexistente
+- 401/403 (autenticação/permissão)
+
 ---
 
-## 📧 Emails Automáticos
+## 📧 E-mails e Agendamento
 
-- Ao ganhar pontos → Email de confirmação com saldo atualizado.  
-- Ao resgatar prêmio → Email de parabéns com detalhes do prêmio.  
-- Cronjob diário → Email lembrando que o cliente pode resgatar o prêmio máximo.  
+- Ao pontuar (006): envia `PointsEarnedMail` com confirmação.
+- Ao resgatar (005): envia `RewardRedeemedMail` com detalhes do prêmio.
+- Lembrete diário: `DailyReminderMail` para clientes com saldo ≥ pontos do prêmio de maior valor.
+
+Jobs: `SendPointsEmail`, `SendRedemptionEmail`, `SendDailyReminderEmail`.
+
+Agendador: definido em `app/Console/Kernel.php`. Envia lembretes apenas a clientes elegíveis ao maior prêmio.
 
 ---
 
-## 🛠️ Setup do Projeto
+## 🛠️ Setup Rápido
 
-1. Clonar o repositório.
+1. Instalar dependências
 
-    ```sh
-    git clone https://github.com/VictorRossan0/programa-fidelidade-laravel.git
-    ```
+```powershell
+composer install
+```
 
-2. Instalar dependências:
+1. Configurar `.env` (MySQL, Mailtrap SMTP, QUEUE_CONNECTION)
 
-    ```bash
-    composer install
-    ```
+1. Migrar e popular base
 
-3. Configurar `.env` com banco MySQL e credenciais Mailtrap(ou outro que for utilizar).  
+```powershell
+php artisan migrate --seed
+```
 
-4. Rodar migrations e seeders:
+1. Subir servidor
 
-    ```bash
-    php artisan migrate --seed
-    ```
+```powershell
+php artisan serve
+```
 
-5. Subir servidor:
+1. (Opcional) Executar filas e agendador
 
-    ```bash
-    php artisan serve
-    ```
+```powershell
+php artisan queue:work
+php artisan schedule:work
+```
 
-6. Testar endpoints via Postman/Insomnia.
+---
+
+## 📎 Postman
+
+- Coleção pronta: `postman_collection.json`
+- Base URL: `http://127.0.0.1:8000/api`
+- Use o header `Authorization: Bearer <TOKEN>`
+
+---
+
+## ✅ Checklist (Implementado)
+
+- Laravel, MySQL, Eloquent
+- Endpoints 001–006 com validações
+- Autenticação por Bearer Token com permissões
+- Débito de pontos no resgate e e-mails transacionais
+- Lembrete diário apenas para quem pode resgatar o prêmio máximo

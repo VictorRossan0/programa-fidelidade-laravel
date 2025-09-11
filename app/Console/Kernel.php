@@ -1,4 +1,10 @@
 <?php
+/**
+ * Console Kernel
+ *
+ * Define o agendamento diário para envio de lembretes a clientes com saldo
+ * suficiente para o prêmio de maior valor.
+ */
 
 namespace App\Console;
 
@@ -6,6 +12,7 @@ use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 use App\Jobs\SendDailyReminderEmail;
 use App\Models\Client;
+use App\Models\Reward;
 
 class Kernel extends ConsoleKernel
 {
@@ -15,12 +22,20 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // Envia lembrete diário para todos os clientes
+        // Envia lembrete diário APENAS para clientes com saldo >= prêmio de maior valor
         $schedule->call(function () {
-            $clients = Client::all();
-            foreach ($clients as $client) {
-                dispatch(new SendDailyReminderEmail($client));
+            $maxRequired = Reward::max('points_required');
+            if (!$maxRequired) {
+                return; // Sem prêmios cadastrados
             }
+            Client::chunk(200, function ($clients) use ($maxRequired) {
+                foreach ($clients as $client) {
+                    $balance = optional($client->points()->first())->amount ?? 0;
+                    if ($balance >= $maxRequired) {
+                        dispatch(new SendDailyReminderEmail($client));
+                    }
+                }
+            });
         })->daily();
     }
 

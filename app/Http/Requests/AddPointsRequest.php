@@ -1,4 +1,10 @@
 <?php
+/**
+ * AddPointsRequest
+ *
+ * Validação da entrada de pontuação (006). Exige client_id válido e
+ * amount_spent >= 5.
+ */
 
 namespace App\Http\Requests;
 

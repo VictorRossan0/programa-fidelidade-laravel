@@ -1,4 +1,9 @@
 <?php
+/**
+ * RewardFactory
+ *
+ * Cria prêmios de teste com nome e pontos exigidos aleatórios.
+ */
 
 namespace Database\Factories;
 

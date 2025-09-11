@@ -1,4 +1,9 @@
 <?php
+/**
+ * TransactionSeeder
+ *
+ * Cria transações de compra com valores gastos e pontos gerados.
+ */
 
 namespace Database\Seeders;
 

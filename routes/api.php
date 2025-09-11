@@ -1,20 +1,29 @@
 <?php
+/**
+ * API Routes — Programa de Fidelidade
+ *
+ * Define os endpoints públicos da API com autenticação via Bearer Token
+ * (middleware `token`). Cobrem cadastro e consulta de clientes, pontuação,
+ * resgates e saldo, conforme requisitos do teste técnico.
+ *
+ * Endpoints:
+ *  - POST /api/clients (001) — cadastro de cliente
+ *  - GET  /api/clients/{id} (002) — buscar cliente
+ *  - GET  /api/clients (003) — listar clientes
+ *  - GET  /api/clients/{id}/balance (004) — saldo e resgates
+ *  - POST /api/redemptions (005) — resgatar prêmio
+ *  - POST /api/points/earn (006) — pontuar cliente
+ */
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\PointController;
 use App\Http\Controllers\RedemptionController;
 
-// Rota de teste rápido
-// Route::middleware('token:001')->get('/test', function () {
-//     return response()->json(['message' => 'Middleware Laravel 12 funcionando!']);
-// });
-
 // Rotas do programa de fidelidade
-// Cada rota exige um token específico, conforme permissões da documentação
-Route::middleware('token:001')->post('/clients', [ClientController::class, 'store']); // Cadastro de cliente
-Route::middleware('token:002')->get('/clients/{id}', [ClientController::class, 'show']); // Consulta de cliente
-Route::middleware('token:003')->get('/clients', [ClientController::class, 'index']); // Listagem de clientes
-Route::middleware('token:004')->get('/clients/{id}/balance', [ClientController::class, 'balance']); // Consulta de saldo
-Route::middleware('token:005')->post('/redemptions', [RedemptionController::class, 'store']); // Resgate de prêmio
-Route::middleware('token:006')->post('/points/earn', [PointController::class, 'earn']); // Pontuar cliente
+Route::middleware('token:001')->post('/clients', [ClientController::class, 'store']);
+Route::middleware('token:002')->get('/clients/{id}', [ClientController::class, 'show']);
+Route::middleware('token:003')->get('/clients', [ClientController::class, 'index']);
+Route::middleware('token:004')->get('/clients/{id}/balance', [ClientController::class, 'balance']);
+Route::middleware('token:005')->post('/redemptions', [RedemptionController::class, 'store']);
+Route::middleware('token:006')->post('/points/earn', [PointController::class, 'earn']);

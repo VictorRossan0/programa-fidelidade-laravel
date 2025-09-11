@@ -1,4 +1,9 @@
 <?php
+/**
+ * ClientFactory
+ *
+ * Gera dados falsos para o modelo Client (nome e e-mail únicos).
+ */
 
 namespace Database\Factories;
 

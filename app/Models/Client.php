@@ -1,4 +1,10 @@
 <?php
+/**
+ * Model Client
+ *
+ * Representa o cliente do programa de fidelidade e suas relações (pontos,
+ * resgates e transações). Garante a criação do registro de pontos ao criar.
+ */
 
 namespace App\Models;
 
@@ -9,13 +15,11 @@ use App\Models\Redemption;
 use App\Models\Transaction;
 
 
-// Model que representa o cliente do programa de fidelidade.
 class Client extends Model
 {
     use HasFactory;
 	protected $fillable = ['name', 'email'];
 
-	// Inicializa pontos ao criar cliente.
 	protected static function booted()
     {
         static::created(function ($client) {
@@ -25,19 +29,16 @@ class Client extends Model
         });
     }
 
-	// Relacionamento: cliente possui vários pontos.
 	public function points()
 	{
 		return $this->hasMany(Point::class);
 	}
 
-	// Relacionamento: cliente possui vários resgates.
 	public function redemptions()
 	{
 		return $this->hasMany(Redemption::class);
 	}
 
-	// Relacionamento: cliente possui várias transações.
 	public function transactions()
 	{
 		return $this->hasMany(Transaction::class);

@@ -1,4 +1,11 @@
 <?php
+/**
+ * AuthTokenMiddleware
+ *
+ * Middleware de autenticação por Bearer Token com verificação de permissões
+ * por rota. Os tokens e suas permissões estão definidas localmente para fins
+ * de avaliação do teste técnico.
+ */
 
 namespace App\Http\Middleware;
 

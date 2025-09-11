@@ -1,4 +1,9 @@
 <?php
+/**
+ * Migration: create_transactions_table
+ *
+ * Tabela de transações: valor gasto e pontos gerados.
+ */
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;

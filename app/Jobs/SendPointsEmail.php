@@ -1,4 +1,9 @@
 <?php
+/**
+ * SendPointsEmail Job
+ *
+ * Envia e-mail de confirmação de pontos ganhos para o cliente.
+ */
 
 namespace App\Jobs;
 
@@ -8,6 +13,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Mail;
+use App\Mail\PointsEarnedMail;
 
 /**
  * Job responsável por enviar o e-mail de confirmação de pontos ganhos.
@@ -29,8 +35,9 @@ class SendPointsEmail implements ShouldQueue
     public function handle()
     {
         // Envia o e-mail de confirmação de pontos ganhos
-        $balance = $this->client->points->amount ?? 0;
+    $point = $this->client->points()->first();
+    $balance = $point?->amount ?? 0;
         Mail::to($this->client->email)
-            ->send(new \App\Mail\PointsEarnedMail($this->client, $this->points, $balance));
+            ->send(new PointsEarnedMail($this->client, $this->points, $balance));
     }
 }
