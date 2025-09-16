@@ -22,37 +22,37 @@ class FidelityApiTest extends TestCase
 
     private function authHeaders(string $token): array
     {
-        return ['Authorization' => 'Bearer '.$token, 'Accept' => 'application/json'];
+        return ['Authorization' => 'Bearer ' . $token, 'Accept' => 'application/json'];
     }
 
     public function test_001_cadastrar_cliente()
     {
         $payload = ['name' => 'João Teste', 'email' => 'joao@example.com'];
-    $res = $this->postJson('/api/clients', $payload, $this->authHeaders('4b5f8f32c96a9aa152e0c6615d4e632f'));
+        $res = $this->postJson('/api/clients', $payload, $this->authHeaders('4b5f8f32c96a9aa152e0c6615d4e632f'));
         $res->assertCreated()->assertJsonFragment(['email' => 'joao@example.com']);
     }
 
     public function test_002_buscar_cliente()
     {
         $client = Client::factory()->create();
-    $res = $this->getJson('/api/clients/'.$client->id, $this->authHeaders('117ae721e424e7f819893edb2c0c5fd6'));
+        $res = $this->getJson('/api/clients/' . $client->id, $this->authHeaders('117ae721e424e7f819893edb2c0c5fd6'));
         $res->assertOk()->assertJsonFragment(['id' => $client->id]);
     }
 
     public function test_003_listar_clientes()
     {
         Client::factory()->count(2)->create();
-    $res = $this->getJson('/api/clients', $this->authHeaders('117ae721e424e7f819893edb2c0c5fd6'));
+        $res = $this->getJson('/api/clients', $this->authHeaders('117ae721e424e7f819893edb2c0c5fd6'));
         $res->assertOk();
     }
 
     public function test_006_pontuar_cliente_minimo_5()
     {
         $client = Client::factory()->create();
-    $res = $this->postJson('/api/points/earn', ['client_id' => $client->id, 'amount_spent' => 4], $this->authHeaders('3b7d6e2cb06ba79a9c9744f8e256a39e'));
+        $res = $this->postJson('/api/points/earn', ['client_id' => $client->id, 'amount_spent' => 4], $this->authHeaders('3b7d6e2cb06ba79a9c9744f8e256a39e'));
         $res->assertStatus(422);
 
-    $res2 = $this->postJson('/api/points/earn', ['client_id' => $client->id, 'amount_spent' => 50], $this->authHeaders('3b7d6e2cb06ba79a9c9744f8e256a39e'));
+        $res2 = $this->postJson('/api/points/earn', ['client_id' => $client->id, 'amount_spent' => 50], $this->authHeaders('3b7d6e2cb06ba79a9c9744f8e256a39e'));
         $res2->assertOk();
     }
 
@@ -60,8 +60,8 @@ class FidelityApiTest extends TestCase
     {
         $client = Client::factory()->create();
         // Pontua 50 -> 10 pontos
-    $this->postJson('/api/points/earn', ['client_id' => $client->id, 'amount_spent' => 50], $this->authHeaders('4b5f8f32c96a9aa152e0c6615d4e632f'));
-    $res = $this->getJson('/api/clients/'.$client->id.'/balance', $this->authHeaders('117ae721e424e7f819893edb2c0c5fd6'));
+        $this->postJson('/api/points/earn', ['client_id' => $client->id, 'amount_spent' => 50], $this->authHeaders('4b5f8f32c96a9aa152e0c6615d4e632f'));
+        $res = $this->getJson('/api/clients/' . $client->id . '/balance', $this->authHeaders('117ae721e424e7f819893edb2c0c5fd6'));
         $res->assertOk()->assertJsonFragment(['saldo' => 10]);
     }
 
@@ -69,8 +69,8 @@ class FidelityApiTest extends TestCase
     {
         $client = Client::factory()->create();
         // 50 -> 10 pontos
-    $this->postJson('/api/points/earn', ['client_id' => $client->id, 'amount_spent' => 50], $this->authHeaders('4b5f8f32c96a9aa152e0c6615d4e632f'));
-    $res = $this->postJson('/api/redemptions', ['client_id' => $client->id, 'reward_id' => 2], $this->authHeaders('4b5f8f32c96a9aa152e0c6615d4e632f'));
+        $this->postJson('/api/points/earn', ['client_id' => $client->id, 'amount_spent' => 50], $this->authHeaders('4b5f8f32c96a9aa152e0c6615d4e632f'));
+        $res = $this->postJson('/api/redemptions', ['client_id' => $client->id, 'reward_id' => 2], $this->authHeaders('4b5f8f32c96a9aa152e0c6615d4e632f'));
         $res->assertCreated()->assertJsonFragment(['reward_id' => 2, 'remaining_balance' => 0]);
         $this->assertTrue($res->headers->has('Location'));
     }

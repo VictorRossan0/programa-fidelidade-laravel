@@ -1,4 +1,5 @@
 <?php
+
 /**
  * PointsEarnedMail
  *
@@ -31,6 +32,6 @@ class PointsEarnedMail extends Mailable
     public function build()
     {
         return $this->subject('🎉 Você ganhou pontos no programa de fidelidade!')
-                    ->markdown('emails.points');
+            ->markdown('emails.points');
     }
 }

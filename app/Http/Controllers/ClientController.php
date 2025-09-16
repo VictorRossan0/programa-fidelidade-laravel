@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ClientController
  *
@@ -19,8 +20,8 @@ class ClientController extends Controller
      */
     public function store(StoreClientRequest $request)
     {
-    $client = Client::create($request->validated());
-    // A criação do registro de pontos é realizada no evento booted() do Model Client
+        $client = Client::create($request->validated());
+        // A criação do registro de pontos é realizada no evento booted() do Model Client
 
         return response()->json($client, 201);
     }

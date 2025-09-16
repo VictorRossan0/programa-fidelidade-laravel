@@ -1,4 +1,5 @@
 <?php
+
 /**
  * SendPointsEmail Job
  *
@@ -35,8 +36,8 @@ class SendPointsEmail implements ShouldQueue
     public function handle()
     {
         // Envia o e-mail de confirmação de pontos ganhos
-    $point = $this->client->points()->first();
-    $balance = $point?->amount ?? 0;
+        $point = $this->client->points()->first();
+        $balance = $point?->amount ?? 0;
         Mail::to($this->client->email)
             ->send(new PointsEarnedMail($this->client, $this->points, $balance));
     }

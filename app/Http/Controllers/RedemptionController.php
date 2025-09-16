@@ -1,4 +1,5 @@
 <?php
+
 /**
  * RedemptionController
  *
@@ -21,9 +22,9 @@ class RedemptionController extends Controller
      */
     public function store(RedeemRewardRequest $request)
     {
-    $client = Client::findOrFail($request->input('client_id'));
-    $reward = Reward::findOrFail($request->input('reward_id'));
-    $point = $client->points()->first();
+        $client = Client::findOrFail($request->input('client_id'));
+        $reward = Reward::findOrFail($request->input('reward_id'));
+        $point = $client->points()->first();
 
         if (!$point || $point->amount < $reward->points_required) {
             return response()->json(['error' => 'Saldo insuficiente'], 400);
@@ -51,6 +52,6 @@ class RedemptionController extends Controller
                 'remaining_balance' => $remaining,
                 'created_at' => $redemption->created_at,
             ], 201)
-            ->header('Location', url('/api/redemptions/'.$redemption->id));
+            ->header('Location', url('/api/redemptions/' . $redemption->id));
     }
 }

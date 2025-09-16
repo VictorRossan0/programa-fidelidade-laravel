@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Model Reward
  *
@@ -14,10 +15,10 @@ use App\Models\Redemption;
 class Reward extends Model
 {
     use HasFactory;
-	protected $fillable = ['name', 'points_required'];
+    protected $fillable = ['name', 'points_required'];
 
-	public function redemptions()
-	{
-		return $this->hasMany(Redemption::class);
-	}
+    public function redemptions()
+    {
+        return $this->hasMany(Redemption::class);
+    }
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Model Client
  *
@@ -18,9 +19,9 @@ use App\Models\Transaction;
 class Client extends Model
 {
     use HasFactory;
-	protected $fillable = ['name', 'email'];
+    protected $fillable = ['name', 'email'];
 
-	protected static function booted()
+    protected static function booted()
     {
         static::created(function ($client) {
             if ($client->points()->count() === 0) {
@@ -29,18 +30,18 @@ class Client extends Model
         });
     }
 
-	public function points()
-	{
-		return $this->hasMany(Point::class);
-	}
+    public function points()
+    {
+        return $this->hasMany(Point::class);
+    }
 
-	public function redemptions()
-	{
-		return $this->hasMany(Redemption::class);
-	}
+    public function redemptions()
+    {
+        return $this->hasMany(Redemption::class);
+    }
 
-	public function transactions()
-	{
-		return $this->hasMany(Transaction::class);
-	}
+    public function transactions()
+    {
+        return $this->hasMany(Transaction::class);
+    }
 }

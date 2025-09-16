@@ -26,7 +26,7 @@ class MailAndScheduleTest extends TestCase
 
     private function auth(string $token): array
     {
-        return ['Authorization' => 'Bearer '.$token, 'Accept' => 'application/json'];
+        return ['Authorization' => 'Bearer ' . $token, 'Accept' => 'application/json'];
     }
 
     public function test_email_enviado_ao_pontuar_e_ao_resgatar()
@@ -67,7 +67,7 @@ class MailAndScheduleTest extends TestCase
             }
         }
 
-    // Deve ter despachado apenas 1 job (somente elegível)
-    Bus::assertDispatchedTimes(SendDailyReminderEmail::class, 1);
+        // Deve ter despachado apenas 1 job (somente elegível)
+        Bus::assertDispatchedTimes(SendDailyReminderEmail::class, 1);
     }
 }

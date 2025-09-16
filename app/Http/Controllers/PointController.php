@@ -1,4 +1,5 @@
 <?php
+
 /**
  * PointController
  *
@@ -21,11 +22,11 @@ class PointController extends Controller
      */
     public function earn(AddPointsRequest $request)
     {
-    $client = Client::findOrFail($request->input('client_id'));
-    $points = (int) floor($request->input('amount_spent') / 5);
+        $client = Client::findOrFail($request->input('client_id'));
+        $points = (int) floor($request->input('amount_spent') / 5);
 
-    $point = $client->points()->firstOrCreate(['client_id' => $client->id], ['amount' => 0]);
-    $point->increment('amount', $points);
+        $point = $client->points()->firstOrCreate(['client_id' => $client->id], ['amount' => 0]);
+        $point->increment('amount', $points);
 
         Transaction::create([
             'client_id'    => $client->id,
@@ -33,8 +34,8 @@ class PointController extends Controller
             'points_earned' => $points
         ]);
 
-    $point->refresh();
-    dispatch(new SendPointsEmail($client, $points));
+        $point->refresh();
+        dispatch(new SendPointsEmail($client, $points));
 
         return response()->json(['message' => 'Pontos adicionados com sucesso']);
     }
