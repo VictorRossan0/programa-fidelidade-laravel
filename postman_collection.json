@@ -1,68 +1,180 @@
 {
-  "info": {
-    "name": "Programa Fidelidade API",
-    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
-  },
-  "item": [
-    {
-      "name": "001 - Cadastrar Cliente",
-      "request": {
-        "method": "POST",
-        "header": [
-          {"key": "Authorization", "value": "Bearer 4b5f8f32c96a9aa152e0c6615d4e632f"},
-          {"key": "Content-Type", "value": "application/json"}
-        ],
-        "url": {"raw": "http://localhost:8000/api/clients", "protocol": "http", "host": ["localhost"], "port": "8000", "path": ["api","clients"]},
-        "body": {"mode": "raw", "raw": "{\n  \"name\": \"João Silva\",\n  \"email\": \"joao.silva@example.com\"\n}"}
-      }
+    "info": {
+        "name": "Programa Fidelidade API",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
     },
-    {
-      "name": "002 - Buscar Cliente",
-      "request": {
-        "method": "GET",
-        "header": [{"key": "Authorization", "value": "Bearer 117ae721e424e7f819893edb2c0c5fd6"}],
-        "url": {"raw": "http://localhost:8000/api/clients/1", "protocol": "http", "host": ["localhost"], "port": "8000", "path": ["api","clients","1"]}
-      }
-    },
-    {
-      "name": "003 - Listar Clientes",
-      "request": {
-        "method": "GET",
-        "header": [{"key": "Authorization", "value": "Bearer 117ae721e424e7f819893edb2c0c5fd6"}],
-        "url": {"raw": "http://localhost:8000/api/clients", "protocol": "http", "host": ["localhost"], "port": "8000", "path": ["api","clients"]}
-      }
-    },
-    {
-      "name": "004 - Saldo do Cliente",
-      "request": {
-        "method": "GET",
-        "header": [{"key": "Authorization", "value": "Bearer 117ae721e424e7f819893edb2c0c5fd6"}],
-        "url": {"raw": "http://localhost:8000/api/clients/1/balance", "protocol": "http", "host": ["localhost"], "port": "8000", "path": ["api","clients","1","balance"]}
-      }
-    },
-    {
-      "name": "006 - Pontuar Cliente",
-      "request": {
-        "method": "POST",
-        "header": [
-          {"key": "Authorization", "value": "Bearer 3b7d6e2cb06ba79a9c9744f8e256a39e"},
-          {"key": "Content-Type", "value": "application/json"}
-        ],
-        "url": {"raw": "http://localhost:8000/api/points/earn", "protocol": "http", "host": ["localhost"], "port": "8000", "path": ["api","points","earn"]},
-        "body": {"mode": "raw", "raw": "{\n  \"client_id\": 1,\n  \"amount_spent\": 50\n}"}
-      }
-    },
-    {
-      "name": "005 - Resgatar Prêmio",
-      "request": {
-        "method": "POST",
-        "header": [
-          {"key": "Authorization", "value": "Bearer 4b5f8f32c96a9aa152e0c6615d4e632f"},
-          {"key": "Content-Type", "value": "application/json"}
-        ],
-        "url": {"raw": "http://localhost:8000/api/redemptions", "protocol": "http", "host": ["localhost"], "port": "8000", "path": ["api","redemptions"]},
-        "body": {"mode": "raw", "raw": "{\n  \"client_id\": 1,\n  \"reward_id\": 2\n}"}
-      }
-    }
-  ]
+    "item": [
+        {
+            "name": "001 - Cadastrar Cliente",
+            "request": {
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "Authorization",
+                        "value": "Bearer 4b5f8f32c96a9aa152e0c6615d4e632f"
+                    },
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    }
+                ],
+                "url": {
+                    "raw": "http://localhost:8000/api/clients",
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "8000",
+                    "path": [
+                        "api",
+                        "clients"
+                    ]
+                },
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n  \"name\": \"João Silva\",\n  \"email\": \"joao.silva@example.com\"\n}"
+                }
+            }
+        },
+        {
+            "name": "002 - Buscar Cliente",
+            "request": {
+                "method": "GET",
+                "header": [
+                    {
+                        "key": "Authorization",
+                        "value": "Bearer 117ae721e424e7f819893edb2c0c5fd6"
+                    }
+                ],
+                "url": {
+                    "raw": "http://localhost:8000/api/clients/1",
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "8000",
+                    "path": [
+                        "api",
+                        "clients",
+                        "1"
+                    ]
+                }
+            }
+        },
+        {
+            "name": "003 - Listar Clientes",
+            "request": {
+                "method": "GET",
+                "header": [
+                    {
+                        "key": "Authorization",
+                        "value": "Bearer 117ae721e424e7f819893edb2c0c5fd6"
+                    }
+                ],
+                "url": {
+                    "raw": "http://localhost:8000/api/clients",
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "8000",
+                    "path": [
+                        "api",
+                        "clients"
+                    ]
+                }
+            }
+        },
+        {
+            "name": "004 - Saldo do Cliente",
+            "request": {
+                "method": "GET",
+                "header": [
+                    {
+                        "key": "Authorization",
+                        "value": "Bearer 117ae721e424e7f819893edb2c0c5fd6"
+                    }
+                ],
+                "url": {
+                    "raw": "http://localhost:8000/api/clients/1/balance",
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "8000",
+                    "path": [
+                        "api",
+                        "clients",
+                        "1",
+                        "balance"
+                    ]
+                }
+            }
+        },
+        {
+            "name": "006 - Pontuar Cliente",
+            "request": {
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "Authorization",
+                        "value": "Bearer 3b7d6e2cb06ba79a9c9744f8e256a39e"
+                    },
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    }
+                ],
+                "url": {
+                    "raw": "http://localhost:8000/api/points/earn",
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "8000",
+                    "path": [
+                        "api",
+                        "points",
+                        "earn"
+                    ]
+                },
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n  \"client_id\": 1,\n  \"amount_spent\": 50\n}"
+                }
+            }
+        },
+        {
+            "name": "005 - Resgatar Prêmio",
+            "request": {
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "Authorization",
+                        "value": "Bearer 4b5f8f32c96a9aa152e0c6615d4e632f"
+                    },
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    }
+                ],
+                "url": {
+                    "raw": "http://localhost:8000/api/redemptions",
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "8000",
+                    "path": [
+                        "api",
+                        "redemptions"
+                    ]
+                },
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n  \"client_id\": 1,\n  \"reward_id\": 2\n}"
+                }
+            }
+        }
+    ]
 }
