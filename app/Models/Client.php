@@ -5,6 +5,8 @@
  *
  * Representa o cliente do programa de fidelidade e suas relações (pontos,
  * resgates e transações). Garante a criação do registro de pontos ao criar.
+ * O evento booted() garante que todo cliente sempre tenha um saldo de pontos,
+ * mesmo que seja 0.
  */
 
 namespace App\Models;
